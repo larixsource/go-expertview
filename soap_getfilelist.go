@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/xml"
+	"errors"
 	"fmt"
-
-	"github.com/pkg/errors"
 )
 
 type deviceTypeXml struct {

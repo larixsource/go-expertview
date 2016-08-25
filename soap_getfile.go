@@ -3,9 +3,8 @@ package expertview
 import (
 	"encoding/base64"
 	"encoding/xml"
+	"errors"
 	"fmt"
-
-	"github.com/pkg/errors"
 )
 
 func parseGetFile(r []byte) ([]byte, error) {
