@@ -14,7 +14,10 @@ const (
 )
 
 var (
-	ErrAuthentication = errors.New("authentication error")
+	ErrAuthentication        = errors.New("authentication error")
+	ErrUnexpected            = errors.New("unexpected error")
+	ErrFirmwareNotSelectable = errors.New("firmware not selectable error")
+	ErrNoSuchFile            = errors.New("no such file error")
 )
 
 type Credentials struct {
@@ -58,7 +61,7 @@ type ExpertView struct {
 }
 
 // NewExpertView returns an *ExpertView, pointing to the given endpoint and using the specified API version. If no
-// version or endpoint are given, the default values are used (DefaultEndpoint and DefaultVersion)
+// version or endpoint are given, the default values are used instead (DefaultEndpoint and DefaultVersion)
 func NewExpertView(endpoint string, version string) *ExpertView {
 	if endpoint == "" {
 		endpoint = DefaultEndpoint
@@ -91,4 +94,22 @@ func (ev *ExpertView) GetFileList(c Credentials) (FileList, error) {
 		return FileList{}, errors.New("empty response")
 	}
 	return parseGetFileList(resp)
+}
+
+func (ev *ExpertView) GetFile(c Credentials, filename string) ([]byte, error) {
+	doc, err := createGetFile(c, ev.version, filename)
+	if err != nil {
+		return nil, fmt.Errorf("error building xml request: %s", err)
+	}
+
+	reqBody := strings.NewReader(doc.String())
+	resp, err := ev.cli.call(reqBody)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(resp) == 0 {
+		return nil, errors.New("empty response")
+	}
+	return parseGetFile(resp)
 }

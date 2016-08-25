@@ -34,11 +34,16 @@ func parseGetFileList(r []byte) (FileList, error) {
 	}
 
 	fault := env.Body.Fault
-	switch {
-	case fault != nil && fault.Detail != nil && fault.Detail.AuthenticationException != nil:
-		return FileList{}, ErrAuthentication
-	case fault != nil:
-		return FileList{}, errors.New("unknown error")
+	if fault != nil {
+		detail := fault.Detail
+		switch {
+		case detail != nil && detail.AuthenticationException != nil:
+			return FileList{}, ErrAuthentication
+		case detail != nil && detail.UnexpectedException != nil:
+			return FileList{}, ErrUnexpected
+		default:
+			return FileList{}, errors.New("unknown error")
+		}
 	}
 
 	soapGetFileList := env.Body.GetFileListResponse

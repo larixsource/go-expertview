@@ -13,6 +13,7 @@ type soapBody struct {
 
 	Fault               *soapFault           `xml:",omitempty"`
 	GetFileListResponse *getFileListResponse `xml:"getFileListResponse,omitempty"`
+	GetFileResponse     *getFileResponse     `xml:"getFileResponse,omitempty"`
 }
 
 type soapFault struct {
@@ -25,7 +26,10 @@ type soapFault struct {
 }
 
 type soapDetail struct {
-	AuthenticationException *authenticationException `xml:"AuthenticationException,omitempty"`
+	AuthenticationException        *authenticationException        `xml:"AuthenticationException,omitempty"`
+	UnexpectedException            *unexpectedException            `xml:"UnexpectedException,omitempty"`
+	FirmwareNotSelectableException *firmwareNotSelectableException `xml:"FirmwareNotSelectableException,omitempty"`
+	NoSuchFileException            *noSuchFileException            `xml:"NoSuchFileException,omitempty"`
 }
 
 type authenticationException struct {
@@ -34,8 +38,32 @@ type authenticationException struct {
 	Message string `xml:"message,omitempty"`
 }
 
+type unexpectedException struct {
+	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ UnexpectedException"`
+
+	Message string `xml:"message,omitempty"`
+}
+
 type getFileListResponse struct {
 	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ getFileListResponse"`
+
+	Return []byte `xml:"return"`
+}
+
+type firmwareNotSelectableException struct {
+	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ FirmwareNotSelectableException"`
+
+	Message string `xml:"message,omitempty"`
+}
+
+type noSuchFileException struct {
+	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ NoSuchFileException"`
+
+	Message string `xml:"message,omitempty"`
+}
+
+type getFileResponse struct {
+	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ getFileResponse"`
 
 	Return []byte `xml:"return"`
 }

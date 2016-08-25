@@ -1,0 +1,7 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:getFileResponse xmlns:ns2="http://webservice.expertview.squarell.com/">
+            <return>aGVsbG8=</return>
+        </ns2:getFileResponse>
+    </S:Body>
+</S:Envelope>

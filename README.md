@@ -9,7 +9,7 @@ golang client for Squarell Expert View webservice
 | getInstallRecords  | No  |
 | postInstallRecords | No  |
 | getFileList        | Yes |
-| getFile            | No  |
+| getFile            | Yes |
 | getVersion         | No  |
 | getInstallRecords  | No  |
 | putLogBooks        | No  |

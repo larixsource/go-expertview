@@ -18,6 +18,33 @@ func createGetFileList(cred Credentials, version string) (*dom.Document, error) 
 	return doc, nil
 }
 
+func createGetFile(cred Credentials, version string, filename string) (*dom.Document, error) {
+	doc, _, body, err := createEnvelope()
+	if err != nil {
+		return doc, err
+	}
+	node, err := createBaseNode(doc, "getFile", cred, version)
+	if err != nil {
+		return doc, err
+	}
+
+	filenameNode, err := doc.CreateElement("filename")
+	if err != nil {
+		return doc, err
+	}
+	err = filenameNode.AppendText(filename)
+	if err != nil {
+		return doc, err
+	}
+	err = node.AddChild(filenameNode)
+	if err != nil {
+		return doc, err
+	}
+
+	body.AddChild(node)
+	return doc, nil
+}
+
 func createEnvelope() (doc *dom.Document, header types.Element, body types.Element, err error) {
 	doc = dom.CreateDocument()
 
