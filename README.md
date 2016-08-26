@@ -6,7 +6,7 @@ golang client for Squarell Expert View webservice
 
 | Operation | Supported |
 | --------- | --------- |
-| getInstallRecords  | No  |
+| getInstallRecords  | Yes |
 | postInstallRecords | No  |
 | getFileList        | Yes |
 | getFile            | Yes |

@@ -11,9 +11,10 @@ type soapEnvelope struct {
 type soapBody struct {
 	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Body"`
 
-	Fault               *soapFault           `xml:",omitempty"`
-	GetFileListResponse *getFileListResponse `xml:"getFileListResponse,omitempty"`
-	GetFileResponse     *getFileResponse     `xml:"getFileResponse,omitempty"`
+	Fault                     *soapFault                 `xml:",omitempty"`
+	GetFileListResponse       *getFileListResponse       `xml:"getFileListResponse,omitempty"`
+	GetFileResponse           *getFileResponse           `xml:"getFileResponse,omitempty"`
+	GetInstallRecordsResponse *getInstallRecordsResponse `xml:"getInstallRecordsResponse,omitempty"`
 }
 
 type soapFault struct {
@@ -64,6 +65,12 @@ type noSuchFileException struct {
 
 type getFileResponse struct {
 	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ getFileResponse"`
+
+	Return []byte `xml:"return"`
+}
+
+type getInstallRecordsResponse struct {
+	XMLName xml.Name `xml:"http://webservice.expertview.squarell.com/ getInstallRecordsResponse"`
 
 	Return []byte `xml:"return"`
 }

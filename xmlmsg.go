@@ -45,6 +45,19 @@ func createGetFile(cred Credentials, version string, filename string) (*dom.Docu
 	return doc, nil
 }
 
+func createGetInstallRecords(cred Credentials, version string) (*dom.Document, error) {
+	doc, _, body, err := createEnvelope()
+	if err != nil {
+		return doc, err
+	}
+	node, err := createBaseNode(doc, "getInstallRecords", cred, version)
+	if err != nil {
+		return doc, err
+	}
+	body.AddChild(node)
+	return doc, nil
+}
+
 func createEnvelope() (doc *dom.Document, header types.Element, body types.Element, err error) {
 	doc = dom.CreateDocument()
 

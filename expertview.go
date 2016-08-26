@@ -54,6 +54,18 @@ type FileList struct {
 	Records     []Record
 }
 
+type InstallationRecord struct {
+	SerialNumber string
+	ID           string
+	Telematic    string
+	HardwareProf string
+	SoftwareProf string
+	DCF          string
+	Firmware     string
+	Key          string
+	Username     string
+}
+
 // ExpertView is a client for the Squarell Expert View webservice.
 type ExpertView struct {
 	version string
@@ -112,4 +124,22 @@ func (ev *ExpertView) GetFile(c Credentials, filename string) ([]byte, error) {
 		return nil, errors.New("empty response")
 	}
 	return parseGetFile(resp)
+}
+
+func (ev *ExpertView) GetInstallationRecords(c Credentials) ([]InstallationRecord, error) {
+	doc, err := createGetInstallRecords(c, ev.version)
+	if err != nil {
+		return nil, fmt.Errorf("error building xml request: %s", err)
+	}
+
+	reqBody := strings.NewReader(doc.String())
+	resp, err := ev.cli.call(reqBody)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(resp) == 0 {
+		return nil, errors.New("empty response")
+	}
+	return parseGetInstallRecords(resp)
 }
