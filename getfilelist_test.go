@@ -47,7 +47,7 @@ func TestExpertView_GetFileList(t *testing.T) {
 	assert.Len(t, fl.DeviceTypes, 3)
 	assert.Equal(t, "8000-1", fl.DeviceTypes[0].ProductNumber)
 	assert.Equal(t, "Normal (Solid/Flex)", fl.DeviceTypes[0].Description)
-	assert.Len(t, fl.Records, 60)
+	assert.Len(t, fl.Records, 56)
 	assert.Equal(t, DCFKind, fl.Records[0].Kind)
 	assert.Equal(t, "INTA1-FLX12-MBA+VDO-RS-120224CL.DCF", fl.Records[0].Name)
 	assert.Equal(t, "D9984527582012022715184747.dcf", fl.Records[0].File)

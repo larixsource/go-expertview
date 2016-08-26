@@ -56,14 +56,14 @@ func parseGetFileList(r []byte) (FileList, error) {
 	// decode return (base64)
 	dl := base64.StdEncoding.DecodedLen(len(soapGetFileList.Return))
 	buf := make([]byte, dl)
-	_, decErr := base64.StdEncoding.Decode(buf, soapGetFileList.Return)
+	n, decErr := base64.StdEncoding.Decode(buf, soapGetFileList.Return)
 	if decErr != nil {
 		return FileList{}, fmt.Errorf("error decoding getFileListResponse b64 data: %s", decErr)
 	}
 
 	// decode xml
 	var gflr getFileListResponseXml
-	decErr = xml.NewDecoder(bytes.NewReader(buf)).Decode(&gflr)
+	decErr = xml.NewDecoder(bytes.NewReader(buf[:n])).Decode(&gflr)
 	if decErr != nil {
 		return FileList{}, fmt.Errorf("error decoding getFileListResponse xml data: %s", decErr)
 	}
