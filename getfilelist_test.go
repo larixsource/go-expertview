@@ -37,11 +37,12 @@ func TestExpertView_GetFileList(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	fl, err := ev.GetFileList(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
 	})
+	require.Nil(t, err)
+	fl, err := ev.GetFileList()
 	require.Nil(t, err)
 
 	assert.Len(t, fl.DeviceTypes, 3)
@@ -78,10 +79,11 @@ func TestExpertView_GetFileListAuthEx(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	_, err := ev.GetFileList(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
 	})
+	require.Nil(t, err)
+	_, err = ev.GetFileList()
 	assert.Equal(t, ErrAuthentication, err)
 }

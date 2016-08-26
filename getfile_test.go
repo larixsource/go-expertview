@@ -37,11 +37,12 @@ func TestExpertView_GetFile(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	f, err := ev.GetFile(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
-	}, "D9984527582012022715184747.dcf")
+	})
+	require.Nil(t, err)
+	f, err := ev.GetFile("D9984527582012022715184747.dcf")
 	require.Nil(t, err)
 
 	assert.Equal(t, []byte("hello"), f)
@@ -72,11 +73,12 @@ func TestExpertView_GetFileAuthEx(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	_, err := ev.GetFile(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
-	}, "D9984527582012022715184747.dcf")
+	})
+	require.Nil(t, err)
+	_, err = ev.GetFile("D9984527582012022715184747.dcf")
 	assert.Equal(t, ErrAuthentication, err)
 }
 
@@ -105,10 +107,11 @@ func TestExpertView_GetFileNotSelectableEx(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	_, err := ev.GetFile(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
-	}, "D9984527582012022715184747.dcf")
+	})
+	require.Nil(t, err)
+	_, err = ev.GetFile("D9984527582012022715184747.dcf")
 	assert.Equal(t, ErrFirmwareNotSelectable, err)
 }

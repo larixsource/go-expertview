@@ -37,11 +37,12 @@ func TestExpertView_GetInstallationRecords(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	fl, err := ev.GetInstallationRecords(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
 	})
+	require.Nil(t, err)
+	fl, err := ev.GetInstallationRecords()
 	require.Nil(t, err)
 
 	assert.Len(t, fl, 2)
@@ -81,10 +82,11 @@ func TestExpertView_GetInstallationRecordsAuthEx(t *testing.T) {
 	}))
 	defer server.Close()
 
-	ev := NewExpertView(server.URL, DefaultVersion)
-	_, err := ev.GetInstallationRecords(Credentials{
+	ev, err := NewExpertView(server.URL, DefaultVersion, Credentials{
 		Login:    "demo",
 		Password: "demo",
 	})
+	require.Nil(t, err)
+	_, err = ev.GetInstallationRecords()
 	assert.Equal(t, ErrAuthentication, err)
 }

@@ -68,30 +68,37 @@ type InstallationRecord struct {
 
 // ExpertView is a client for the Squarell Expert View webservice.
 type ExpertView struct {
-	version string
-	cli     *soapCli
+	version     string
+	cli         *soapCli
+	credentials Credentials
 }
 
-// NewExpertView returns an *ExpertView, pointing to the given endpoint and using the specified API version. If no
-// version or endpoint are given, the default values are used instead (DefaultEndpoint and DefaultVersion)
-func NewExpertView(endpoint string, version string) *ExpertView {
+// NewExpertView returns an *ExpertView, pointing to the given endpoint and using the specified API version and
+// credentials. If no version or endpoint are given, the default values are used instead (DefaultEndpoint and
+// DefaultVersion)
+func NewExpertView(endpoint string, version string, credentials Credentials) (*ExpertView, error) {
 	if endpoint == "" {
 		endpoint = DefaultEndpoint
 	}
 	if version == "" {
 		version = DefaultVersion
 	}
-	return &ExpertView{
+	if credentials.Login == "" || credentials.Password == "" {
+		return nil, errors.New("invalid credentials: login and password required")
+	}
+	ev := &ExpertView{
 		version: version,
 		cli: &soapCli{
 			Endpoint:           endpoint,
 			InsecureSkipVerify: true,
 		},
+		credentials: credentials,
 	}
+	return ev, nil
 }
 
-func (ev *ExpertView) GetFileList(c Credentials) (FileList, error) {
-	doc, err := createGetFileList(c, ev.version)
+func (ev *ExpertView) GetFileList() (FileList, error) {
+	doc, err := createGetFileList(ev.credentials, ev.version)
 	if err != nil {
 		return FileList{}, fmt.Errorf("error building xml request: %s", err)
 	}
@@ -108,8 +115,8 @@ func (ev *ExpertView) GetFileList(c Credentials) (FileList, error) {
 	return parseGetFileList(resp)
 }
 
-func (ev *ExpertView) GetFile(c Credentials, filename string) ([]byte, error) {
-	doc, err := createGetFile(c, ev.version, filename)
+func (ev *ExpertView) GetFile(filename string) ([]byte, error) {
+	doc, err := createGetFile(ev.credentials, ev.version, filename)
 	if err != nil {
 		return nil, fmt.Errorf("error building xml request: %s", err)
 	}
@@ -126,8 +133,8 @@ func (ev *ExpertView) GetFile(c Credentials, filename string) ([]byte, error) {
 	return parseGetFile(resp)
 }
 
-func (ev *ExpertView) GetInstallationRecords(c Credentials) ([]InstallationRecord, error) {
-	doc, err := createGetInstallRecords(c, ev.version)
+func (ev *ExpertView) GetInstallationRecords() ([]InstallationRecord, error) {
+	doc, err := createGetInstallRecords(ev.credentials, ev.version)
 	if err != nil {
 		return nil, fmt.Errorf("error building xml request: %s", err)
 	}
