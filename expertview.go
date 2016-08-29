@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	DefaultEndpoint = "https://playground.expertview-live.com:443/ExpertWebservice-play/Webservice"
+	DefaultEndpoint = "https://www.expertview-live.com:443/ExpertWebservice-prod/Webservice"
 	DefaultVersion  = "2.5.0"
 )
 
