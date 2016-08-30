@@ -1,4 +1,4 @@
-# go-expertview
+# go-expertview [![Build Status](https://travis-ci.org/larixsource/go-expertview.svg?branch=master)](https://travis-ci.org/larixsource/go-expertview)
 
 golang client for Squarell Expert View webservice
 
